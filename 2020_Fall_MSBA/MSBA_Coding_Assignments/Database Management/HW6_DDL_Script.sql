@@ -1,0 +1,85 @@
+CREATE TABLE MEDIA(
+  Mtype_ID NCHAR(10) NOT NULL,
+  Media_Type CHAR(25),
+  Media_Type_Desc CHAR(500),
+  PRIMARY KEY(Mtype_ID)
+);
+
+CREATE TABLE INSTRUCTOR(
+  Emp_ID NCHAR(10) NOT NULL,
+  Emp_Name CHAR(50),
+  Emp_Rank INT,
+  Emp_Office_Phone INT,
+  PRIMARY KEY(Emp_ID)
+);
+
+CREATE TABLE COURSE(
+  Course_ID NCHAR(10) NOT NULL,
+  Course_Desc CHAR(500),
+  Course_Credits FLOAT,
+  Course_ID1 NCHAR(10),
+  PRIMARY KEY(Course_ID),
+  FOREIGN KEY(Course_ID1) REFERENCES COURSE(Course_ID)
+);
+
+CREATE TABLE SECTION(
+  Section_ID NCHAR(10) NOT NULL,
+  EnrLimit INT,
+  Sem CHAR(50),
+  Year INT,
+  Course_ID NCHAR(10),
+  Emp_ID NCHAR(10),
+  PRIMARY KEY(Section_ID),
+  FOREIGN KEY(Course_ID) REFERENCES COURSE(Course_ID),
+  FOREIGN KEY(Emp_ID) REFERENCES INSTRUCTOR(Emp_ID)
+);
+
+CREATE TABLE TIMESLOT(
+  TS_ID NCHAR(10) NOT NULL,
+  Day_of_Week INT,
+  StartTime datetime,
+  EndTime datetime,
+  PRIMARY KEY(TS_ID)
+);
+
+CREATE TYPE board AS OBJECT (
+   Board_Type VARCHAR2(50),
+   PRIMARY KEY(Board_Type)
+ );
+
+CREATE OR REPLACE TYPE my_nested_table AS board;
+CREATE OR REPLACE TYPE my_nested_table2 AS TABLE OF VARCHAR2(30);
+
+CREATE TABLE ROOMmie(
+  BuildingID NCHAR(10) NOT NULL,
+  RoomNo NCHAR(10) NOT NULL,
+  Room_Capacity INT,
+  Room_Type CHAR(50),
+  col1 my_nested_table,
+  col2 my_nested_table2,
+  PRIMARY KEY(BuildingID, RoomNo)
+)
+NESTED TABLE col1 STORE AS CLASSROOM(
+(PRIMARY KEY(Board_Type)) ORGANIZATION INDEX),
+NESTED TABLE col2 STORE AS LAB;
+
+CREATE TABLE SCHEDULE(
+  Sched_ID NCHAR(10) NOT NULL,
+  TS_ID NCHAR(10),
+  BuildingID NCHAR(10),
+  RoomNo NCHAR(10),
+  Section_ID NCHAR(10),
+  PRIMARY KEY(Sched_ID),
+  FOREIGN KEY(TS_ID) REFERENCES TIMESLOT(TS_ID),
+  FOREIGN KEY(BuildingID) REFERENCES ROOM(BuildingID),
+  FOREIGN KEY(RoomNo) REFERENCES ROOM(RoomNo),
+  FOREIGN KEY(Section_ID) REFERENCES SECTION(Section_ID)
+);
+
+CREATE TABLE COMPUTER(
+  Ctype_ID NCHAR(10) NOT NULL,
+  Type_Description CHAR(50),
+  Disk_Capacity INT,
+  Processor_Speed FLOAT,
+  PRIMARY KEY(Ctype_ID)
+);
