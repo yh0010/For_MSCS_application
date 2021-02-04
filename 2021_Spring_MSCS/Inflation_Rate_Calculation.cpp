@@ -83,43 +83,47 @@ void transition(){
 //Description of the Homework
 
 ///////////////////////////////
-// //This program calculates the inflation rate given two Consumer Price Index values and prints it to the monitor.
-//
-// #include <iostream>
-// using namespace std;
-//
-// /*
-//  * getInflationRate - calculates the inflation rate given the old and new consumer price index
-//  * @param old_cpi: is the consumer price index that it was a year ago
-//  * @param new_cpi: is the consumer price index that it is currently
-//  * @returns the computed inflation rate or 0 if inputs are invalid.
-//  */
-// double getInflationRate(float old_cpi, float new_cpi);
-//
-// int main()   //C++ programs start by executing the function main
-// {
-//    // TODO #1: declare two float variables for the old consumer price index (cpi) and the new cpi
-//
-//
-//    // TODO #2: Read in two float values for the cpi and store them in the variables
-//
-//
-//    // TODO #3: call the function InflationRate with the two cpis
-//
-//
-//    // TODO #4: print the results
-//
-//
-//    return 0;
-// }
-//
-//
-// // double getInflationRate(float old_cpi, float new_cpi)
-// // precondition:   both prices must be greater than 0.0
-// // postcondition:  the inflation rate is returned or 0 for invalid inputs
-// double getInflationRate(float old_cpi, float new_cpi)
-// {
-//    // TODO: Implement InflationRate to calculate the percentage increase or decrease
-//    // Use (new_cpi - old_cpi) / old_cpi * 100
-//
-// }
+// DESCRIPTION
+// This lab is Part 2 of a 2 Part Lab called InflationRate. Please complete the instructions. Here is sample output for one run of the program when it's complete. Match the output EXACTLY.
+// 
+// 
+// 
+// Enter the old and new consumer price indices: 238.343 238.250
+// Inflation rate is -0.0390204
+// Try again? (y or Y): y
+// Enter the old and new consumer price indices: 238.250 237.852
+// Inflation rate is -0.167049
+// Try again? (y or Y): n
+// Average rate is -0.103035
+// 
+// 
+// 
+// Part 2
+// 
+// 1. Here are the original instructions from Part 1.
+// 
+// 
+// 
+// // TODO #1: declare two float variables for the old consumer price index (cpi) and the new cpi
+// 
+// 
+// // TODO #2: Read in two float values for the cpi and store them in the variables
+// 
+// 
+// // TODO #3: call the function InflationRate with the two cpis
+// 
+// 
+// // TODO #4: print the results
+// 
+// 
+// 
+// 2. Put the logic in TODO #2-4 into a loop that asks the user to enter 'y' (or 'Y') if there's more data to be entered.
+// 
+// 
+// 
+// 3. Keep a running total of the valid inflation rates and the number of computed rates to calculate the average rate.
+// 
+// 
+// 
+// 4. Print the results after the loop
+
