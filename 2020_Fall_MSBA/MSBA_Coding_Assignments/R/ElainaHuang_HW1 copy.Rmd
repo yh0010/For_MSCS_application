@@ -1,0 +1,175 @@
+---
+title: 'Homework #1: SDGB-7844'
+author: "Elaina(Yaogui) Huang"
+fordham_id_number: "A18744584"
+fordham_email: "yhuang327@fordham.edu"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Each of the exercises below are from our textbook - _Introduction to Scientific Programming and Simulaiton Using R._ The exercises begin on p. 26.  Make sure to comment your code.  Points will be deducted for uncommented code!  
+
+You should create new code blocks if necessary to answer the question.  You should also use plaintext to provide an explanation for your code if the question calls for one.
+
+### Chapter 2 - Exercise 1a. 
+
+```{r}
+#Give R assignment statements that set the variable z to the following listed expressions from the textbook
+x <- 5
+a <-2
+b <- 2
+(z <- x^(a^b))
+
+```
+
+### Chapter 2 - Exercise 1b. 
+
+```{r}
+#assign (x^a)^b to z
+(z <- (x^a)^b)
+
+```
+
+### Chapter 2 - Exercise 1c. 
+
+```{r}
+#assign 3x^3+2x^2+6x+1(in minimized opration) to z
+(z <- (3*x+2)*(x^2+2)-3)
+```
+
+### Chapter 2 - Exercise 1d. 
+
+```{r}
+#assign the second decimal digit of x into z
+x <- 0.456
+(z <- as.integer((x*100)%%10))
+
+```
+
+### Chapter 2 - Exercise 1e. 
+
+```{r}
+#assign z+1 into z
+(z <- z+1)
+
+```
+
+
+### Chapter 2 - Exercise 2a.
+
+```{r}
+#the return should be a sequence from 1-8-1
+(x <- c(seq(1,8),seq(7,1)))
+
+```
+
+### Chapter 2 - Exercise 2b.
+
+```{r}
+#return repeated sequence
+n <- 1 #n start by 1
+vector <- c() #create empty vector
+while (n < 6) { #start while loop with condition to break when n reach 6
+  y<- rep(n, times = n) #assign repetition sequence into y
+  n <- n+1 #n increase by 1 in every run until break
+  for (p in y) #nested a for loop to assign value
+    vector <-c(vector, p) #combine vector's original value with new values attained from the while loop
+}
+print(vector) #print to show result
+```
+
+
+### Chapter 2 - Exercise 2c. 
+
+```{r}
+m <- matrix(1,3,3) #create a 3x3 matrix in m with only #1
+diag(m) <- 0 #change the diagonal value to 0
+m #print the final result
+```
+
+### Chapter 2 - Exercise 2d.
+
+```{r}
+A <- matrix(0,3,3)#create 3x3 matrix with only 0s assign to A
+m <- c(7,5,3) #create a vector contains 3 numbers assign to m
+A[seq(3, by = 2, length = 3)] <- m #assign m to A's extracted value
+#extract a sequence from matrix A that is a diagonal 
+#A[1,2] <- 2 #change the value in coordination of row 1 column 2 to 2
+A #print result
+```
+
+### Chapter 2 - Exercise 4
+
+```{r}
+vec <- 1:100 #assign numbers from 1 to 100 into vec
+(vec_revised <- vec[vec%%2 & vec%%3 & vec%%7]) #use modular division to find out the numbers can't be divided by either 2, 3, or 7
+```
+
+
+### Chapter 2 - Exercise 5a. 
+
+```{r}
+queue <- c("Steve", "Russell", "Alison", "Liam")#queue has 4 customers in line
+(queue <- c(queue, "Barry")) #now queue has 1 more customer in line
+```
+
+### Chapter 2 - Exercise 5b. 
+
+```{r}
+served <- "Steve"#Steve is served
+(queue <- queue[-which(queue %in% served)])#to match served value in queue by %in% and indicate those matched values index by which() function then use minus sign to eliminate the matched value from queue vector
+#assign new vector to replace old values in queue
+```
+
+### Chapter 2 - Exercise 5c.
+
+```{r}
+(queue <- (append(queue, values = "Pam with 1 item", after = match("Russell",queue)-1)))
+#use append function to add value
+#assign the new vector into queue
+```
+
+### Chapter 2 - Exercise 5d. 
+
+```{r}
+impatient <- "Barry" #Barry is impatient
+(queue <- queue[-which(queue %in% impatient)])#to match impatient value in queue by %in% and indicate those matched values index by which() function then use minus sign to eliminate the matched value from queue vector
+#assign new vector to replace old values in queue
+```
+
+### Chapter 2 - Exercise 5e. 
+
+```{r}
+impatient <- "Alison" #Alison is impatient
+(queue <- queue[-which(queue %in% impatient)])#to match impatient value in queue by %in% and indicate those matched values index by which() function then use minus sign to eliminate the matched value from queue vector
+#assign new vector to replace old values in queue
+
+#now look for where Russell is
+which(queue=="Russell")
+```
+
+### Chapter 2 - Exercise 6
+
+```{r}
+rm(list = ls()) 
+x <- 1 #successful, x has 1 value
+x[3] <- 3#successful, x[3] has 3, x[1:2] are NA NA
+y <- c()#successful, y has empty vector, result is NULL
+y[2] <- 2 #successful, y[2] has 2
+y[3] <- y[1] #successful, result: NA 2 NA
+y[2] <- y[4] #successful, result: NA NA NA
+#z[1] <- 0#failed, because z never existed, thefore z[1] is not existed
+```
+
+### Chapter 2 - Exercise 7
+
+```{r}
+diag(5,10,10) #way1 use diag() function to set diagonal as 5 and 10 by 10 row and column
+m <- matrix(0,10,10)#way2 create a matrix will full 0s first, then change only the diagonal values
+diag(m) <- 5
+m
+```
+

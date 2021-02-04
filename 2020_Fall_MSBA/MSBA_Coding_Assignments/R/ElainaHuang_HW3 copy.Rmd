@@ -1,0 +1,247 @@
+---
+title: 'SDGB-7844 Homework #3'
+author: "Elaina(Yaogui) Huang"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### The USA Today Diversity Index
+
+The USA TODAY Diversity Index is a number -- on a scale from 0 to 100 -- that represents the chance that two people chosen randomly from an area will be different by race and ethnicity. In more personal terms: "What is the chance that the next person I meet will be different from me?" A higher number means more diversity, a lower number, less. The index was invented in 1991 by Phil Meyer of the University of North Carolina and Shawn McIntosh of USA TODAY.
+
+#### Exploratory Analysis
+
+1. At what level (State, County, City) is the American Community Survey data available?  How is this different than the deccenial census?
+
+**Answer:**
+ACS collects data from a city-level, because they need to get the best possible represented sample for data so the range of represented population have to be a city-based.
+It's different than decennial census is that the ACS conducts survey 365-calendar days, and it more "up-to-date" than decennial census, whereas decennial census collects every 10 years.
+*****
+
+2. What variable and variable codes are available to describe race and ethnicity in the US Census?  Describe how these variables are represented in the data (Variables: B02001_001-B02001_006 & B03002_001-B03002_002 & B03002_012).
+
+**Answer:**
+Based on this weblink I found: https://www2.census.gov/programs-surveys/acs/tech_docs/code_lists/2019_ACS_Code_Lists.pdf
+At pg 106, the US census use code 100-199 for White, 200-299 for Black, 300-399/A01-Z99 for American Indians and Alaska Native, A01-M43 for American Indian Tribes, etc.
+B02001_001 is for total race
+Based on the second part "Computing The USA Today Diversity Index," (B02001_001-B02001_006) refers to race, white alone, Black alone, Asian alone, American indian and Alaska Native alone, and Native Hawaii alone. 
+B03002_001 Estimate!!Total
+B03002_002 Estimate!!Total!!Not Hispanic or Latino
+B03002_012 Estimate!!Total!!Hispanic or Latino
+*****
+
+3. How does the American Community Survey define race and ethnicity?  Is this important information to report under assumptions for your analysis?
+
+**Answer:**
+It clusters white, black, asian, native americans to be a specific race category, but not hispanic. Hispanic would fall into the category of "some other race." The census also have categories on: 2 or more races, and 2 or more races on whether include the 'some other race' category.
+Yes it is important because is a way to track the ancestry, and it helps to demonstrate the differences among all of them in education level, income level, and other characteristics.
+*****
+
+
+4. Does the American Community Survey provide the margin of error for their estimates of the proportion of the prevalence of each race and ethnicity?  How might this impact the validity of our results?
+
+**Answer:**
+Per what I found, yes, ACS have MOE for their estimates on race.
+What they do is at a given confidence level, the estimate and the actual population value will
+differ by no more than the value of the MOE in a 90% confidence level as standard.
+This might impact the accuracy of our results as a portion of the data had been modified based on MOE method, it's very hard to collect the data accurately based on hugh population numbers, the validity might be compromised.
+*****
+
+5.  Use the _tidycensus_ API to assign the race and ethnicity data for New York, New Jersey and Connecticut (at the County level) to a data frame.
+
+```{r}
+#Here I create the census table by using api key
+#then I use get_decennial function to import the specific race data into R as data frame
+#install.packages('tidycensus')
+#install.packages("tidyverse")
+library(tidycensus)
+
+#census_api_key("02c6ec5d42f75194741c84656aee9baf188db756", install = TRUE)
+
+
+library(tidyverse)
+
+Acensus <- load_variables(2016, "acs5")
+
+my_state <- c("NY", "NJ", "CT")
+
+all_race <- c("B02001_001","B02001_002","B02001_003","B02001_004","B02001_005","B02001_006","B03002_001","B03002_002","B03002_012")
+
+all <- get_acs(geography = "county", year = 2016, state = my_state, variable = all_race, survey = "acs5")
+
+modall <- select(all, -moe)
+```
+
+
+#### Computing The USA Today Diversity Index
+
+Each of the calculations below will be done **by county** and not in aggregate.
+
+**Step 1:** 
+
+In the current federal scheme, there are five named races – white, black/African-American, American Indian/Alaska Native, Asian and Native Hawaiian/Other Pacific Islander and an estimate for total population (B02001_001-B02001_006). Ensure that you have collected the proper data from the _tidycensus_ API for these values, as well as the values for the Hispanic population (B03002_001-B03002_002 & B03002_012).
+
+Use the _spread_ function to create columns for each racial group (and the total population).  Rename these columns to better reflect the data if you have not already done so.
+
+
+Calculate each group's share of the population.  This is done by dividing the value for each racial column by the total population column.  Create new variables for your data frame for each calculation.
+
+$$ \small RaceProportion_i = \frac{Race_i}{Total_i} $$
+
+```{r}
+library(dplyr)
+library(tidyverse)
+
+new_all <- modall %>% 
+  
+  spread(variable, estimate) %>% 
+  
+  rename(totalrace = B02001_001, white = B02001_002, black = B02001_003, native = B02001_004, asian = B02001_005, hawaii = B02001_006, totalother = B03002_001, nonhispanic = B03002_002, hispanic = B03002_012) %>% 
+  
+  mutate(whiteshare = (white/totalrace), blackshare = (black/totalrace), nativeshare = (native/totalrace), asianshare = (asian/totalrace), hawaiishare = (hawaii/totalrace), nonhispanicshare = (nonhispanic/totalother), hispanicshare = (hispanic/totalother)) %>% 
+  
+  select(NAME, whiteshare, blackshare, nativeshare, asianshare, hawaiishare, nonhispanicshare, hispanicshare) 
+```
+
+**Step 2:**
+
+Take each racial group's share of the population, square it and sum the results.
+
+$$ \small P(Racial_i)  = \sum_{i=1}^{n} RaceProportion_i^2 $$
+
+The Census also includes a category called "Some other race." Because studies show that people who check it are overwhelmingly Hispanic, that category is not used. Hispanics' effect on diversity is calculated in Step 3.
+
+```{r}
+new_all2 <- new_all %>% mutate(totalrace = whiteshare^2 + blackshare^2 + nativeshare^2 + asianshare^2 + hawaiishare^2) %>% select(NAME, totalrace, nonhispanicshare, hispanicshare)
+```
+
+
+**Step 3: **
+
+Because Hispanic origin is a separate Census question, the probability that someone is Hispanic or not must be figured separately.  Take the Hispanic and non-Hispanic percentages of the population, square each and add them to get the chance that any two people will be Hispanic or not.  Use this calculation to create a new variable in your data frame.
+
+$$ \small P(Ethnic_i)  = Hispanic_i^2+ Non Hispanic_i^2 $$
+
+```{r}
+#
+new_all3 <- new_all2 %>% mutate(totalother = hispanicshare^2 + nonhispanicshare^2) %>% select(NAME, totalrace, totalother)
+```
+
+
+**Step 4:**
+
+To calculate whether two people are the same on both measures, multiply the results of the first two steps.  Use this calculation to create a new column in your data frame.  This is the probability that any two people are the SAME by race and ethnicity. 
+
+$$ \small P(Same_i)  = P(Racial_i) \times P(Ethnic_i) $$
+
+```{r}
+#Multiply the totalrace and totalother together to get the probability of same race
+new_all4 <- new_all3 %>% mutate(ProbSame = totalrace*totalother) %>% select(NAME, ProbSame)
+```
+
+
+**Step 5:** 
+
+Subtract the result from 1 to get the chance that two people are different – diverse. For ease of use, multiply the result by 100 to place it on a scale from 0 to 100.  Create a new column with your USA Today Diversity Index value.
+
+$$ \small DiversityIndex_i =  \Big( 1 - P(Same_i) \Big) \times 100 $$
+
+```{r}
+#by subtracting ProbSame that we will get the finalized DiversityIndex
+new_all5 <- new_all4 %>% mutate(DiversityIndex = 1 - ProbSame) %>% 
+
+#name modification, otherwise it will be hard to track the differences between states  
+  select(NAME, DiversityIndex) %>% separate(NAME, 
+           into=c("county_name", "state_name"), 
+           sep=",") %>% 
+
+#state name goes first then arrange it alphabetically
+  unite(NAME, state_name, county_name, sep = ', ') 
+```
+
+
+#### Geo-spatial Analysis and Visualization
+
+Be sure to properly label your plots and axes.  Points will be deducted for incorrect plot titles or axes.
+
+6. Create a histogram of USA Today Diversity Index values.  Describe the shape of the histogram in statistical terms (Hint: skewness).
+
+**Answer:**
+
+```{r}
+#The histogram is presented based on the modified dataframe from new_all5
+hist(new_all5$DiversityIndex, main = "Histogram: \nUSA Today Diversity Index", 
+     xlab = "Diversity Index", ylab = "Frequency", las = TRUE,
+     col = "pink", density = 75,
+     angle = 80, border = "white")
+```
+
+
+7. Create a visualization which compares the top 10 counties and their diversity index value using ggplot2.
+
+```{r}
+#graph is presented by geom_histogram based on the DiversityIndex values
+library(ggplot2)
+
+ggplot(data = new_all5) + 
+
+  geom_histogram(aes(x=DiversityIndex), color = "white", fill = "skyblue") + 
+
+  labs(title="Histogram: USA Today Diversity Index values") +
+  
+  theme_minimal()
+```
+
+
+8. Using the _leaflet_ mapping library for R (or another mapping library of your choice), visualize the USA Today Diversity Index by county for New York, New Jersey and Connecticut.
+
+```{r}
+#graph is presented by geom_point, enlarge in the "show in new window" to see better
+new_all_graph <- ggplot(data = new_all5) + 
+  geom_point(mapping = 
+               aes(x = DiversityIndex, y = NAME, color = DiversityIndex)) + theme(axis.text=element_text(size=9))  +
+  theme_minimal()
+new_all_graph
+
+```
+
+
+
+9.  Display the following data in the "tooltip" when mousing over your plot: USA Today Diversity Index Value and County Name.
+
+```{r}
+#in order to make "tooltip", I have to install plotly package
+#install.packages("plotly", repos = "http://cran.us.r-project.org")
+
+library(ggplot2)
+library(plotly)
+
+ggplotly(new_all_graph)
+```
+
+
+
+10.  Does there appear to be any relationship between geography and diversity?  Which state appears to be the most diverse?
+
+**Answer:**
+Yes, it is actually quite surprising to me that many NY county have lower diversity index in general than the other two states. From the above graph that we can see the majority of NY's county falls in the range of 0.09 - 0.49, whereas NJ and CT's county both rarely have a county fall below 0.25 on the DiversityIndex and the majority range for the later twos are within 0.26 - 0.77. However, because NY has many more counties than both of NJ and CT, NY's index fluctuation is also very large from 0.09 up to 0.85, that means, overall, NY is still the most diverse state among these 3.
+*****
+
+
+#### Extra Credit
+
+11.  Create a new data frame using the _tidycensus_ API with data on median household income by county for New York, New Jersey and Connecticut.  Join this data together with the data from New York County.  Use ggplot2 (or another visualization library) to visualize the USA Today Diversity Index value and median household incomeon the same plot (Hint: try facet wrap!).
+
+```{r}
+
+```
+
+
+
+12.  Does there appear to be any relationship between median household income and diversity?  How do counties differ on these two measures?
+
+**Answer:**
+

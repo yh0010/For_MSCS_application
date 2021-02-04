@@ -1,0 +1,141 @@
+---
+title: 'Homework #2: SDGB-7844'
+author: "Elaina(Yaogui) Huang"
+fordham_id_number: "A18744584"
+fordham_email: "yhuang327@fordham.edu"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Choose 5 problems below to complete.  Each question below comes from our text, **Introduction to Scientific Programming and Simulation with R**.  Please comment your code where appropriate.
+
+### Chapter 3 - Exercise 1
+
+```{r}
+
+
+```
+
+### Chapter 3 - Exercise 2
+
+```{r}
+#use for loop to complete the question
+x1 <- c(1:100) #assign value
+n1 <- length(x1) #assign length value
+x_sum <- 0
+for (i in 1:n1){ #iterate through 1 to the end of length
+  x_sum <- x_sum + (x1[i])^2 #pull value by index and squared it
+  print(x_sum)
+}
+show('final result:')
+print(x_sum)
+```
+
+### Chapter 3 - Exercise 4
+
+
+```{r}
+#using a while loop to achieve same result as #2
+n2 <- 0
+n3 <- 1
+
+while(n2 < 5){ #stops when n2 reach 5
+  n2 <- n2 + 1 #every iteration n2 gains 1
+  n3 <- (n3 + 1)^2 #every iteration n3 increment and squared
+  print(n3)
+}
+show('final result:')
+  print(n3)
+show('-----------------------')
+#using vector operation to achieve the same result as above
+#assign values into 2 vectors
+vec <- c(1:10)
+vec2 <- vec^2 #squared every value in vec
+print(vec)
+print(vec2)
+(sum(vec2)) #use sum function to add-up
+
+```
+
+### Chapter 3 - Exercise 6
+
+
+```{r}
+#first way doing geometric mean
+install.packages("psych")
+library("psych")
+(geometric.mean(ls2))
+print("first way completed")
+
+#second way doing geometric mean
+ls2 <- c(1:100)
+(exp(mean(log(ls2))))
+print("second way completed")
+
+#third way doing geometric mean
+len <- length(ls2)
+(prod(ls2)^(1/len))
+print("third way completed")
+
+#forth way, by using for loop doing geometric mean
+emp <- 0
+(emp/length(ls2))
+for (len in ls2){
+  emp <- emp + log(len)
+  if (len == 100){
+    emp <- emp/length(ls2)
+    emp <- exp(emp)
+  }
+}
+(emp)
+print("----------------")
+#first way doing harmonic mean
+(1/mean(1/ls2))
+print("first way for harmonic mean")
+print("begin positive checking")
+for (i in 1/ls2){
+  print(i)#yes they are all positive, even they will be averaged then divided by 1 again but the value will always stay positive
+}
+("checking completed")
+#second way doing harmonic mean
+harmonic.mean(ls2)
+print("second way for harmonic mean")
+```
+
+### Chapter 3 - Exercise 7
+
+
+```{r}
+c <- 0
+a <- 1:100
+c <- c + a[seq(1, length(a), 3)]#pull every 3rd element to add to the list
+print(c)
+print('final result')
+print(sum(c))
+
+```
+
+
+### Chapter 3 - Exercise 12
+
+```{r}
+while (TRUE){ #while loop keeps rolling if the number shows other than win or lose condition
+  x <- sum(ceiling(6*runif(2)))
+  print(paste("rolling number :",x))
+  if (x == 2 | x == 3 | x == 12){ #if statement to indicate lose condition 
+    print(paste("lose, number is:",x))
+    break
+  }else{
+    
+    if (x == 7 | x == 11){ #if statement to indicate win condition
+      print(paste("win, number is:",x))
+      break
+  }
+}
+}
+
+
+```
