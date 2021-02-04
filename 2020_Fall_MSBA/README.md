@@ -1,3 +1,3 @@
-This repository aims to record all my coding related work from Sep 2020 to Dec 2020.
+Folder "MSBA_coding_assignments" collects all coding related homeworks or projects that were created during school study.
 
-Please see each README inside the folder for more details of that folder.
+The other 2 folders contain my general coding practices, for coursera class and for data engineer intern interview.
