@@ -40,7 +40,7 @@ int main(){
         //the program then goes back to the prompt and asking for new input, after new input entered, the old input 1 will be stored into OldCpi no matter what,
         //the program will check again if the new input qualify to be stored into the NewCpi, if not, program starts again
 
-        //however, when input is 2/3, 2 will be stored into OldCpi but nothing will be stored into NewCpi; thus trigger the cin.fail(), after cin.clear(),
+        //however, when case2: input is 2/3, 2 will be stored into OldCpi but nothing will be stored into NewCpi; thus trigger the cin.fail(), after cin.clear(),
         //seems like the 2 is erased from the OldCpi, at this point both OldCpi and NewCpi print out as 0, and maybe becuase the /3 are still in the buffer,
         //that's why it triggers the infinite while loop - theoretically speaking
 
