@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 using namespace std;
 
 //The purpose of this code is to calculate the average inflation rates through avg=sum/count
