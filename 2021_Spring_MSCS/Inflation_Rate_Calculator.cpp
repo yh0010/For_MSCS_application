@@ -1,5 +1,6 @@
 #include <iostream>
-#include <limits>//mimir did not compile without this header so I have to include it
+#include <sstream>
+#include <limits> //mimir did not compile without this header so I have to include it
 using namespace std;
 
 //The purpose of this code is to calculate the average inflation rates through avg=sum/count
@@ -12,7 +13,7 @@ using namespace std;
 double getInflationRate(float old_cpi, float new_cpi);
 void transition();
 
-float OldCpi, NewCpi;
+float OldCpi = 1.0, NewCpi = 1.0;
 char confirm;
 bool Checkpoint = true, Checkpoint2 = true;
 int counter = 0;
@@ -20,19 +21,32 @@ double result1, result2;
 
 //main
 int main(){
-
   while (Checkpoint) {
-
+    
     while (Checkpoint2){
-      cout << "Enter the old and new consumer price indices: ";
+      cout << "Enter the old and new consumer price indices: " << endl;
       cin >> OldCpi >> NewCpi; //store inputs in consecutive order
 
       if (cin.fail()){
         cout << "Invalid input" << endl; // prompt to alert user
+        cout << "OldCpi: " << OldCpi << ", NewCpi: " << NewCpi << endl;
+
+        auto* buf = cin.rdbuf(); //try to read the buffer
+        cout << "before, sgetc: " << buf->sgetc() << endl;
+
         cin.clear();
+
+        cout << "after clear, sgetc: " << buf->sgetc() << endl;
+
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        
+        cout << "after ignore, sgetc: " << buf->sgetc() << endl;
+        //Discoveries: sgetc() will print out the space askii code when enter 'a ' 'b ' 'c ' 'd ' 'e ' 'f ' but stops at 'g '
+        //Thoughts: the compiler might initially assume I tried to enter hexadecimal, because cin stored those letters and thus the OldCpi was changed to 0
+        //Dicoveries: if the input is '2/3', then 2 will be stored but the sgetc() will print backward slash askii code, and at this point both OldCpi and NewCpi both turned into 0
+        //Thoughts: Since 2 is a valid value, the cin might tried to pass this value to both variables thus resulted both variables turned into 0
 
-
+//----------------previous notes-----------------------
         // my understanding is that, cin.clear() clears the error flag..
         //and cin.ignore(....) extract maximum allowed characters in the stream(buffer?) until is reached the \n then discard all of them
         //so the buffer is empty that will allow the prompt to reappear and to ask for new inputs
@@ -44,7 +58,8 @@ int main(){
         //however, when case2: input is 2/3, 2 will be stored into OldCpi but nothing will be stored into NewCpi; thus trigger the cin.fail(), after cin.clear(),
         //seems like the 2 is erased from the OldCpi, at this point both OldCpi and NewCpi print out as 0, and maybe becuase the /3 are still in the buffer,
         //that's why it triggers the infinite while loop - theoretically speaking
-
+//------------------------------------------------------
+        
       } else {
         Checkpoint2 = false; //if the inputs were valid then exit this loop
       }
