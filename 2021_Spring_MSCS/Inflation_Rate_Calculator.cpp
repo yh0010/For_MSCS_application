@@ -1,5 +1,5 @@
 #include <iostream>
-#include <sstream>
+#include <sstream> //to read buffer
 #include <limits> //mimir did not compile without this header so I have to include it
 using namespace std;
 
@@ -38,7 +38,7 @@ int main(){
 
         cout << "after clear, sgetc: " << buf->sgetc() << endl;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the maximum allowed streamsize untill and include the new line 
         
         cout << "after ignore, sgetc: " << buf->sgetc() << endl;
         //Discoveries: sgetc() will print out the space askii code when enter 'a ' 'b ' 'c ' 'd ' 'e ' 'f ' but stops at 'g '
