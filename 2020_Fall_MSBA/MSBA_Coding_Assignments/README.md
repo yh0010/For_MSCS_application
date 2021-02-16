@@ -1,4 +1,4 @@
-Web Analytics --- 1 complete project, Python, SQL
+Web Analytics --- Python project, SQL
 
 Data Mining in Business --- Python modeling
 
