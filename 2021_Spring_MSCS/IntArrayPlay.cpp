@@ -1,6 +1,6 @@
 /* Working with arrays and functions
  * Author: Elaina Huang
- * Last modified on: Feb 18, 2021
+ * Last modified on: Feb 22, 2021
  * Known bug
  */
 #include <iostream>
