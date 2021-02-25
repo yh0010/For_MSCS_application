@@ -1,8 +1,6 @@
-Hi all, welcome to my application supportive repository.
+Hi all, welcome to my application supportive repository. Please see the README.md for explanation of each folder.
 
-In here, most of the coding files are from my school assignments&projects, and some others are practices for the Facebook Intern interview and for personal practices.
+MSBA - Python, SQL, Python project, Facebook Data Engineer Intern interview coding+email records
 
-MSBA - Python, SQL
-
-MSCS - C++
+MSCS - C++, grades
 
