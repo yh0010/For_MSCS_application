@@ -2,5 +2,5 @@ Hi all, welcome to my application supportive repository. Please see the README.m
 
 MSBA - Python, SQL, Python project, Facebook Data Engineer Intern interview coding+email records
 
-MSCS - C++, grades
+MSCS - C++, current progam grades
 
