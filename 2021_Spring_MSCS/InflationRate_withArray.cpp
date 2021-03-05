@@ -23,10 +23,10 @@ char confirm;
 int counter = 0;
 double result1, result2 = 0;
 
-
-
 int main(){
   getCPIValues(old_cpi, new_cpi);
+  //compute values when only greater than 0, append computed values into an array, set a counter to count total elements inside the array
+  //requested to use do/while, execute do first no matter while is true or false, as long as inputs are digits, cin.good() stands
 
   for (int i=0;i<counter;i++){
     result2 += arr[i];
@@ -37,8 +37,7 @@ int main(){
 
   double x = findMedianRate(arr, counter);
   cout << "Median rate is " << x << endl;
-
-
+  
   return 0;
 }
 
@@ -56,7 +55,6 @@ void getCPIValues(float old_cpi, float new_cpi){
       cin >> confirm;
 
       if (confirm != 'y' && confirm != 'Y' || counter == MAX_RATES){
-
         break;
         }
     } else {cout << "Error: CPI values must be greater than 0" << endl;}
@@ -90,10 +88,10 @@ void sort_array(double a[], int a_num){
   }
 }
 
-double findMedianRate(double a[], int numRates){
+double findMedianRate(double a[], int numRates){ //if number of elements is even, return middle 2's average
   if(numRates%2==0){
     return (a[numRates/2]+a[numRates/2-1])/2;
   }
-  int y = floor(numRates/2.0);
+  int y = floor(numRates/2.0); //if number of elements is odd, return floored index of the arrary
   return a[y];
 }
