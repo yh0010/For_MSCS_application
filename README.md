@@ -1,6 +1,4 @@
-Hi all, welcome to my application supportive repository. Please see the README.md for explanation of each folder.
-
-MSBA - Python, SQL, Python project, Facebook Data Engineer Intern interview coding+email records
-
-MSCS - C++, current progam grades
+This repository aims to record every coding related work I have completed during school year.
+MSBA - Python, SQL and R.
+MSCS - C++
 
