@@ -1,1 +1,1 @@
-make command is very useful
+operated by using make command
