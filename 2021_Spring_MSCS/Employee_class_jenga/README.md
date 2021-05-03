@@ -1,4 +1,4 @@
-operated by using make command
+constructed through make.
 
 This is like jenga..but is not
 
