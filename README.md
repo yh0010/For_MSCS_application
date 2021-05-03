@@ -1,4 +1,4 @@
-This repository aims to record every coding related work I have completed during school year.
+School works and personal practices.
 
 MSBA - Python, SQL and R.
 
