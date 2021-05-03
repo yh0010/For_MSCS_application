@@ -4,9 +4,9 @@ This is like jenga..but is not
 
 structure:
 
-  \tGrandparent - Employee
+⋅⋅⋅Grandparent - Employee
 
-  \tParent - Salaried Employee, Parent2 - Hourly Employee
+⋅⋅⋅Parent - Salaried Employee, Parent2 - Hourly Employee
 
-  \tGrandchild - Administrator, Grandchild2 - Commission Employee
+⋅⋅⋅Grandchild - Administrator, Grandchild2 - Commission Employee
 
