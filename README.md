@@ -2,4 +2,4 @@
 
 MSBA - Python, SQL and R.
 
-MSCS - C++
+MSCS - C++, Python
